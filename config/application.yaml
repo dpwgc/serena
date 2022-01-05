@@ -1,0 +1,11 @@
+server:
+  # ip地址/域名
+  addr: 0.0.0.0
+
+registry:
+  # 安全密钥
+  secretKey: test
+  # Gossip服务运行端口号
+  port: 8020
+  # 发现服务执行的间隔周期（单位：秒）
+  discoveryCycle: 3
