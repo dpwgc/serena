@@ -1,6 +1,7 @@
 package server
 
 import (
+	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"github.com/hashicorp/memberlist"
 	"github.com/spf13/viper"
@@ -43,10 +44,10 @@ func InitRegistry() {
 	}
 }
 
-// GetNode 获取除了注册中心之外的集群所有节点
-func GetNode(c *gin.Context) {
+// GetNodes 获取除了注册中心之外的集群所有节点
+func GetNodes(c *gin.Context) {
 
-	var nodeList []model.Node
+	var nodes []model.Node
 
 	// 获取当前集群的节点（除去注册中心）
 	for _, member := range list.Members() {
@@ -57,13 +58,11 @@ func GetNode(c *gin.Context) {
 		node := model.Node{
 			Name: member.Name,
 			Addr: member.Addr,
-			Port: member.Port,
+			Port: strings.Split(member.Name, ":")[1],
 		}
-		nodeList = append(nodeList, node)
+		nodes = append(nodes, node)
 	}
 
-	c.JSON(0, gin.H{
-		"code": 0,
-		"data": nodeList,
-	})
+	data, _ := json.Marshal(nodes)
+	c.String(0, string(data))
 }
