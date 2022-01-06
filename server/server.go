@@ -1,28 +1,32 @@
 package server
 
 import (
-	"fmt"
+	"github.com/gin-gonic/gin"
 	"github.com/hashicorp/memberlist"
 	"github.com/spf13/viper"
+	"serena/model"
 	"strconv"
-	"time"
+	"strings"
 )
 
+//节点列表
 var list *memberlist.Memberlist
 
+// InitRegistry 初始化注册中心
 func InitRegistry() {
 
-	//获取该节点的ip地址及端口号
+	//获取该节点的ip地址及Gossip服务端口号
 	addr := viper.GetString("server.addr")
+	//addr为空默认设为0.0.0.0
 	if addr == "" {
 		addr = "0.0.0.0"
 	}
-	port := viper.GetInt("registry.port")
+	gossipPort := viper.GetInt("registry.gossipPort")
 
 	conf := memberlist.DefaultLANConfig()
-	conf.Name = addr + ":" + strconv.Itoa(port)
-	conf.BindPort = port
-	conf.AdvertisePort = port
+	conf.Name = "[r]-" + addr + ":" + strconv.Itoa(gossipPort)
+	conf.BindPort = gossipPort
+	conf.AdvertisePort = gossipPort
 
 	var err error
 
@@ -33,24 +37,33 @@ func InitRegistry() {
 	}
 
 	//将注册中心节点加入到集群（创建一个集群）
-	_, err = list.Join([]string{addr + ":" + strconv.Itoa(port)})
+	_, err = list.Join([]string{addr + ":" + strconv.Itoa(gossipPort)})
 	if err != nil {
 		panic("Failed to join cluster: " + err.Error())
 	}
-
-	discovery()
 }
 
-func discovery() {
+// GetNode 获取除了注册中心之外的集群所有节点
+func GetNode(c *gin.Context) {
 
-	discoveryCycle := viper.GetInt("registry.discoveryCycle")
+	var nodeList []model.Node
 
-	for {
-		// 获取当前集群的节点
-		for _, member := range list.Members() {
-
-			fmt.Printf("Member: %s %s %s\n", member.Name, member.Addr, strconv.Itoa(list.NumMembers()))
+	// 获取当前集群的节点（除去注册中心）
+	for _, member := range list.Members() {
+		//如果该节点是注册中心，跳过
+		if strings.Split(member.Name, "-")[0] == "[r]" {
+			continue
 		}
-		time.Sleep(time.Second * time.Duration(discoveryCycle))
+		node := model.Node{
+			Name: member.Name,
+			Addr: member.Addr,
+			Port: member.Port,
+		}
+		nodeList = append(nodeList, node)
 	}
+
+	c.JSON(0, gin.H{
+		"code": 0,
+		"data": nodeList,
+	})
 }
