@@ -85,7 +85,7 @@ registry:
 在Linux上部署
 
 /serena                   # 文件根目录
-    serena                # 打包后的二进制文件(程序后台执行:setsid ./KapokMQ)
+    serena                # 打包后的二进制文件(程序后台执行:setsid ./serena)
     /config               # 配置目录
         application.yaml  # 配置文件
     /log                  # 日志目录
