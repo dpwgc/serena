@@ -9,7 +9,6 @@ import (
 	"serena/model"
 	"strconv"
 	"strings"
-	"time"
 )
 
 //节点列表
@@ -49,16 +48,6 @@ func InitRegistry() {
 	if err != nil {
 		panic("Failed to join cluster: " + err.Error())
 	}
-
-	go func() {
-		for {
-			// 获取当前集群的消息队列节点信息
-			for _, member := range list.Members() {
-				fmt.Println(member)
-			}
-			time.Sleep(time.Second * 5)
-		}
-	}()
 }
 
 // GetNodes 获取除了注册中心之外的集群所有节点
@@ -74,7 +63,7 @@ func GetNodes(c *gin.Context) {
 		}
 		node := model.Node{
 			Name: member.Name,
-			Addr: member.Addr,
+			Addr: string(member.Addr),
 			Port: strings.Split(member.Name, ":")[1],
 		}
 		nodes = append(nodes, node)
