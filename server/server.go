@@ -61,10 +61,13 @@ func GetNodes(c *gin.Context) {
 		if strings.Split(member.Name, "-")[0] == "r" {
 			continue
 		}
+
+		ap := strings.Split(member.Name, "-")[1]
+
 		node := model.Node{
 			Name: member.Name,
-			Addr: member.Addr,
-			Port: strings.Split(member.Name, ":")[1],
+			Addr: strings.Split(ap, ":")[0],
+			Port: strings.Split(ap, ":")[1],
 		}
 		nodes = append(nodes, node)
 	}
