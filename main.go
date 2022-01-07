@@ -10,6 +10,7 @@ import (
 
 func main() {
 	config.InitConfig()
+	server.InitLog()
 	server.InitRegistry()
 
 	//初始化路由
