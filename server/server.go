@@ -63,7 +63,7 @@ func GetNodes(c *gin.Context) {
 		}
 		node := model.Node{
 			Name: member.Name,
-			Addr: string(member.Addr),
+			Addr: member.Addr,
 			Port: strings.Split(member.Name, ":")[1],
 		}
 		nodes = append(nodes, node)
