@@ -2,7 +2,13 @@
 
 ## 基于Go + Gossip的KapokMQ集群服务发现与注册中心
 
-### KapokMQ消息队列：
+### KapokMQ与Serena应用整合包下载
+
+* https://github.com/dpwgc/kapokmq-server
+
+* https://gitee.com/dpwgc/kapokmq-server
+
+### KapokMQ消息队列源码
 
 * https://github.com/dpwgc/kapokmq
 
@@ -13,6 +19,8 @@
 ***
 
 ### 配置说明
+
+* config/application.yaml
 
 ```yaml
 server:
@@ -34,7 +42,22 @@ registry:
 
 * 使用Gossip发现并同步消息队列服务节点信息。
 
-* 消息队列生产者客户端可通过注册中心获取该集群所有消息队列服务节点列表，并与所有消息队列建立WebSocket连接，进行负载均衡分配。
+* 消息队列生产者客户端可通过注册中心获取该集群所有消息队列服务节点列表，并与所有消息队列建立WebSocket连接，该生产者将随机选取一个消息队列节点投递消息。
+
+#### 获取所有消息队列节点信息 - 接口URL
+> http://127.0.0.1:8031/Registry/GetNode
+
+#### 请求方式
+> POST
+
+#### Content-Type
+> form-data
+
+#### 请求Header参数
+
+| 参数        | 示例值   | 是否必填   |  参数描述  |
+| :--------   | :-----  | :-----  | :----  |
+| secretKey     | test |  必填 | 安全访问密钥 |
 
 ***
 
