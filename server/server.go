@@ -30,7 +30,7 @@ func InitRegistry() {
 	gossipPort := viper.GetInt("registry.gossipPort")
 
 	conf := memberlist.DefaultLANConfig()
-	conf.Name = fmt.Sprintf("%s%s%s%s", "r-", addr, ":", port) //前缀r-表明这是注册中心，前缀mq-表明这是消息队列节点
+	conf.Name = fmt.Sprintf("%s%s%s%s", "r:", addr, ":", port) //前缀r:表明这是注册中心，前缀mq-表明这是消息队列节点
 	//注册中心的Gossip服务端口号
 	conf.BindPort = gossipPort
 	conf.AdvertisePort = gossipPort
@@ -40,14 +40,19 @@ func InitRegistry() {
 	//创建一个注册中心节点
 	list, err = memberlist.Create(conf)
 	if err != nil {
+		Loger.Println("Failed to create memberlist: " + err.Error())
 		panic("Failed to create memberlist: " + err.Error())
 	}
 
 	//由注册中心来创建一个集群
 	_, err = list.Join([]string{addr + ":" + strconv.Itoa(gossipPort)})
 	if err != nil {
+		Loger.Println("Failed to join cluster: " + err.Error())
 		panic("Failed to join cluster: " + err.Error())
 	}
+
+	fmt.Printf("\033[1;35;40m%s\033[0m", "                      ###                                              \n                     ######                                ##          \n                    ###   ##                           ######          \n                    ###    ###                      ######  #          \n                   ####      ##    ############  #######    #          \n                   ####       ########################      #          \n                #######   ############################      #          \n                # ## ################################### ## #          \n               ## ######################################  # #          \n             ############################################ ###          \n          ################ #################################           \n        ####################################################           \n")
+	fmt.Printf("\033[1;30;42m%s\033[0m\n", " Serena \n")
 }
 
 // GetNodes 获取除了注册中心之外的集群所有节点
@@ -57,17 +62,16 @@ func GetNodes(c *gin.Context) {
 
 	// 获取当前集群的消息队列节点信息（除去注册中心）
 	for _, member := range list.Members() {
+		m := strings.Split(member.Name, ":")
 		//如果该节点是注册中心，跳过
-		if strings.Split(member.Name, "-")[0] == "r" {
+		if m[0] == "r" {
 			continue
 		}
 
-		ap := strings.Split(member.Name, "-")[1]
-
 		node := model.Node{
 			Name: member.Name,
-			Addr: strings.Split(ap, ":")[0],
-			Port: strings.Split(ap, ":")[1],
+			Addr: m[1],
+			Port: m[2],
 		}
 		nodes = append(nodes, node)
 	}
