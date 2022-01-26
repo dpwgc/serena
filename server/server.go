@@ -30,9 +30,15 @@ func InitRegistry() {
 	gossipPort := viper.GetInt("registry.gossipPort")
 
 	conf := memberlist.DefaultLANConfig()
-	conf.Name = fmt.Sprintf("%s%s%s%s", "r:", addr, ":", port) //前缀r:表明这是注册中心，前缀mq-表明这是消息队列节点
-	//注册中心的Gossip服务端口号
+
+	//本节点的名称（例：r:0.0.0.0:8031）
+	conf.Name = fmt.Sprintf("%s%s%s%s", "r:", addr, ":", port) //前缀r:表明这是注册中心，前缀mq:表明这是消息队列节点
+
+	//Bind：Gossip服务内部注册地址（0.0.0.0:gossipPort）
 	conf.BindPort = gossipPort
+
+	//注册中心对外暴露的地址（公网ip，用于在公网环境下连接消息队列节点）
+	conf.AdvertiseAddr = addr
 	conf.AdvertisePort = gossipPort
 
 	var err error
