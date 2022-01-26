@@ -6,10 +6,7 @@ import (
 	"serena/server"
 )
 
-/**
- * 路由
- */
-
+// InitRouters 初始化路由
 func InitRouters() (r *gin.Engine) {
 
 	r = gin.Default()
