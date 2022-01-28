@@ -134,7 +134,7 @@
 
 ***
 
-### 配置说明
+### 配置文件
 
 * config/application.yaml
 
