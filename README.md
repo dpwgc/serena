@@ -2,13 +2,19 @@
 
 ## 基于Go + Gossip的KapokMQ集群服务发现与注册中心
 
-### KapokMQ与Serena应用整合包下载
+![Go](https://img.shields.io/static/v1?label=LICENSE&message=Apache-2.0&color=orange)
+![Go](https://img.shields.io/static/v1?label=Go&message=v1.17&color=blue)
+[![github](https://img.shields.io/static/v1?label=Github&message=kapokmq&color=blue)](https://github.com/dpwgc/kapokmq)
+[![star](https://gitee.com/dpwgc/kapokmq/badge/star.svg?theme=dark)](https://gitee.com/dpwgc/kapokmq/stargazers)
+[![fork](https://gitee.com/dpwgc/kapokmq/badge/fork.svg?theme=dark)](https://gitee.com/dpwgc/kapokmq/members)
+
+#### KapokMQ与Serena应用整合包下载
 
 * https://github.com/dpwgc/kapokmq-server `github`
 
 * https://gitee.com/dpwgc/kapokmq-server `gitee`
 
-### KapokMQ消息队列源码
+#### KapokMQ消息队列源码
 
 * https://github.com/dpwgc/kapokmq `github`
 
@@ -63,29 +69,25 @@
 
 ***
 
-### 打包方式
+### 运行与打包
 
-* 填写application.yaml内的配置。
+##### 安装并配置go环境
 
-* 运行项目：
+##### 填写application.yaml内的配置。
 
-````
-安装并配置go环境
-````
+##### 运行项目：
 
-```
-（1）GoLand直接运行main.go(调试)
-```
+* GoLand直接运行main.go(调试)
+
+* 打包成windows exe
 
 ```
-（2）打包成exe运行(windows部署)
-
   GoLand终端cd到项目根目录，执行go build命令，生成exe文件
 ```
 
-```
-（3）打包成二进制文件运行(linux部署)
+* 打包成linux二进制文件
 
+```
   cmd终端cd到项目根目录，依次执行下列命令：
   SET CGO_ENABLED=0
   SET GOOS=linux
