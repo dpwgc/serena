@@ -19,9 +19,9 @@ func InitRegistry() {
 
 	//获取注册中心的服务ip地址
 	addr := viper.GetString("server.addr")
-	//addr为空默认设为0.0.0.0
+	//addr缺省，addr为空默认设为127.0.0.1
 	if addr == "" {
-		addr = "0.0.0.0"
+		addr = "127.0.0.1"
 	}
 	//获取注册中心的Gin Http服务端口号
 	port := viper.GetString("server.port")
