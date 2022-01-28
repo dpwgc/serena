@@ -136,17 +136,4 @@
 
 * config/application.yaml
 
-```yaml
-server:
-  # ip地址/域名（公网环境下部署需要配置成公网ip）
-  addr: 0.0.0.0
-  # Gin服务端口号
-  port: 8031
-
-registry:
-  # 安全密钥
-  secretKey: test
-  # Gossip服务运行端口号
-  gossipPort: 8041
-```
 
