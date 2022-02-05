@@ -1,15 +1,32 @@
 package config
 
 import (
-	"github.com/spf13/viper"
+	"gopkg.in/yaml.v2"
+	"io/ioutil"
 )
 
+type Conf struct {
+	Server   Server   `yaml:"server"`
+	Registry Registry `yaml:"registry"`
+}
+type Server struct {
+	Addr string `yaml:"addr"`
+	Port string `yaml:"port"`
+}
+type Registry struct {
+	SecretKey  string `yaml:"secretKey"`
+	GossipPort int    `yaml:"gossipPort"`
+}
+
+var Get Conf
+
+// InitConfig 初始化项目配置
 func InitConfig() {
-	viper.AddConfigPath("./config")
-	viper.SetConfigFile("application") // 指定配置文件路径
-	viper.SetConfigName("application") //配置文件名
-	viper.SetConfigType("yaml")        //配置文件类型
-	err := viper.ReadInConfig()
+	yamlFile, err := ioutil.ReadFile("application.yaml")
+	if err != nil {
+		panic(err)
+	} // 将读取的yaml文件解析为响应的 struct
+	err = yaml.Unmarshal(yamlFile, &Get)
 	if err != nil {
 		panic(err)
 	}
