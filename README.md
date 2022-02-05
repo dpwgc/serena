@@ -107,8 +107,7 @@
 
 /serena                   # 文件根目录
     serena.exe            # 打包后的exe文件
-    /config               # 配置目录
-        application.yaml  # 配置文件
+    application.yaml      # 配置文件
     /log                  # 日志目录
 ```
 
@@ -117,8 +116,7 @@
 
 /serena                   # 文件根目录
     serena                # 打包后的二进制文件(程序后台执行:setsid ./serena)
-    /config               # 配置目录
-        application.yaml  # 配置文件
+    application.yaml      # 配置文件
     /log                  # 日志目录
 ```
 
@@ -136,6 +134,6 @@
 
 ### 配置文件
 
-* config/application.yaml
+* ./application.yaml
 
 
