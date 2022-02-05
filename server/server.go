@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/hashicorp/memberlist"
-	"github.com/spf13/viper"
+	"serena/config"
 	"serena/model"
 	"strconv"
 	"strings"
@@ -18,16 +18,16 @@ var list *memberlist.Memberlist
 func InitRegistry() {
 
 	//获取注册中心的服务ip地址
-	addr := viper.GetString("server.addr")
+	addr := config.Get.Server.Addr
 	//addr缺省，addr为空默认设为127.0.0.1
 	if addr == "" {
 		addr = "127.0.0.1"
 	}
 	//获取注册中心的Gin Http服务端口号
-	port := viper.GetString("server.port")
+	port := config.Get.Server.Port
 
 	//获取注册中心的Gossip服务端口号
-	gossipPort := viper.GetInt("registry.gossipPort")
+	gossipPort := config.Get.Registry.GossipPort
 
 	conf := memberlist.DefaultLANConfig()
 
