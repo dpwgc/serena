@@ -69,15 +69,19 @@
 
 ***
 
-### 运行与打包
+### 打包方法
 
 ##### 安装并配置go环境
 
-##### 填写application.yaml内的配置。
+##### 应用打包：
 
-##### 运行项目：
+* 使用build.bat一键打包
 
-* GoLand直接运行main.go(调试)
+```
+Windows系统下直接运行./build.bat文件
+自动执行打包命令
+生成Linux二进制文件与Windows exe文件
+```
 
 * 打包成windows exe
 
